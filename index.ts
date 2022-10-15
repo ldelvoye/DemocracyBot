@@ -1,4 +1,6 @@
-const { Client, GatewayIntentBits } = require('discord.js')
+const { Client, Collection, GatewayIntentBits } = require('discord.js')
+const fs = require('node:fs')
+const path = require('node:path')
 require('dotenv').config();
 
 const client = new Client({
@@ -8,6 +10,8 @@ const client = new Client({
         GatewayIntentBits.GuildMessages
     ]
 })
+
+client.commands = new Collection()
 
 client.on('messageCreate', (message) => {
     if (message.content === 'ping') {
