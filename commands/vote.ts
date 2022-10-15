@@ -8,9 +8,9 @@ module.exports = {
             option
                 .setName('user')
                 .setDescription('The user you want to vote for')
-                .setRequired(true))
+                .setRequired(true)),
     async execute(interaction: any) {
 
-        await interaction.reply('')
+        return interaction.reply('Hello')
     }
 }
