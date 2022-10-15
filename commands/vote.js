@@ -1,16 +1,10 @@
-import { SlashCommandBuilder } from 'discord.js'
+import { SlashCommandBuilder } from "discord.js";
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('vote')
-        .setDescription('Adds a vote to the user of your choice.')
-        .addUserOption( option =>
-            option
-                .setName('user')
-                .setDescription('The user you want to vote for')
-                .setRequired(true)),
+        .setName('elect')
+        .setDescription('Cast or change your vote!'),
     async execute(interaction) {
-
-        return interaction.reply('Hello')
+        await interaction.reply()
     }
 }
