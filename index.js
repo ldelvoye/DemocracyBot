@@ -1,5 +1,5 @@
-const { Client, GatewayIntentBits } = require('discord.js')
-require('dotenv').config();
+import { Client, GatewayIntentBits } from 'discord.js';
+require('./config.json').config();
 
 const client = new Client({
     intents: [
@@ -19,4 +19,4 @@ client.on('ready', () => {
     console.log(`Logged in as user ${client.user?.username}`)
 })
 
-client.login(process.env.TOKEN)
+client.login(token)
