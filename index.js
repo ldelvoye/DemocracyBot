@@ -21,6 +21,7 @@ const client = new Client({
 //         client.commands.set(command.data.name, command)
 // }
 
+// Commands reply/functionality
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
@@ -34,6 +35,7 @@ client.on('interactionCreate', async interaction => {
 		await interaction.reply('User info.');
 	}
 });
+//
 
 client.on('ready', () => {
     console.log(`Logged in as user ${client.user?.username}`)
