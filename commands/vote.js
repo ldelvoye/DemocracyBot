@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, userMention } = require('discord.js');
+const { SlashCommandBuilder, userMention, CommandInteractionOptionResolver } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -10,6 +10,11 @@ module.exports = {
                 .setRequired(true)
             ),
     async execute(interaction) {
-        await interaction.reply(`${interaction.user} voted for ${interaction.options.getUser('user')}`)
+
+        const voter = interaction.user
+        const voterId = voter.id
+        const votee = interaction.options.getUser('user')
+        const voteeId = votee.id
+        await interaction.reply(`${voter} voted for ${votee}`)
     }
 }
