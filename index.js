@@ -1,6 +1,6 @@
-import { Client, Collection, GatewayIntentBits } from 'discord.js';
-import { readdirSync } from 'node:fs';
-import { join } from 'node:path';
+const { Client, Collection, GatewayIntentBits } = require('discord.js')
+const fs = require('node:fs')
+const path = require('node:path')
 require('./config.json').config();
 
 const client = new Client({
@@ -12,11 +12,11 @@ const client = new Client({
 })
 
 client.commands = new Collection()
-const commandsPath = join(__dirname, 'commands');
-const commandFiles = readdirSync(commandsPath).filter(file => file.endswith('js'));
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endswith('js'));
 
 for (const file of commandFiles) {
-    const filePath = join(commandsPath, file):;
+    const filePath = path.join(commandsPath, file);
         const command = require(filePath)
         client.commands.set(command.data.name, command)
 }

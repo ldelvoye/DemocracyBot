@@ -1,5 +1,5 @@
-import { REST, SlashCommandBuilder, Routes } from 'discord.js';
-import { clientId, guildId, token } from './config.json';
+const { REST, SlashCommandBuilder, Routes } = require('discord.js');
+const { clientId, guildId, token } = require('./config.json');
 
 const commands = [
 	new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
