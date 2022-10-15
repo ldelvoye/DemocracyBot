@@ -9,6 +9,7 @@ module.exports = {
                 .setDescription('Who you are voting for')
                 .setRequired(true)
             ),
+
     async execute(interaction) {
         const voter = interaction.user
         const voterId = voter.id
@@ -20,6 +21,6 @@ module.exports = {
             .setDescription(`${voter} voted for ${votee}`)
             .setColor(0x00FF00)
 
-        await interaction.reply({embeds: [message]})
+        await interaction.reply({embeds:[message]})
     }
 }
