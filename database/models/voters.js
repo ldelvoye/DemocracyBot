@@ -20,6 +20,10 @@ Voters.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    votes: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
   {
     sequelize,
