@@ -7,7 +7,7 @@ const { db } = require("./database/database_operations");
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.commands = new Collection();
-db.sync_all_tables();
+// db.sync_all_tables();
 
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
@@ -40,4 +40,4 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-// client.login(token);
+client.login(token);
