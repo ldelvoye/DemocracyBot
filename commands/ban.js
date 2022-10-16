@@ -1,9 +1,8 @@
-const {SlashCommandBuilder, PermissionFlagsBits} = require('discord.js');
-const pollEmbed = require('discord.js-poll-embed');
+const {SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits} = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('ban')
+    .setName('banvote')
     .setDescription('Begins a ban vote')
     .addUserOption((option) =>
       option
@@ -14,7 +13,19 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
 
   async execute(interaction) {
-    message = pollEmbed("test_msg", "test_title", "test_options", 300)
-    await interaction.reply({ embeds: [message] });
+    const banned = interaction.options.getUser("user")
+    const bannedId = banned.id
+    const message = new EmbedBuilder()
+      .setTitle(`A new banvote has been initiated`)
+      .setDescription(`Vote now to decide on ${banned}'s fate`)
+      .setColor(0xFF0000)
+      .addFields(
+        {name: `✅ to spare them`, value: '\u200B', inline:true},
+        {name: `❌ to ban them`, value: `\u200B`, inline:true}
+      )
+
+    const output = await interaction.reply({ embeds: [message], fetchReply:true })
+    output.react('✅')
+    output.react('❌')
   }    
 }

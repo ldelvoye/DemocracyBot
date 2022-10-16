@@ -14,7 +14,7 @@ module.exports = {
                 {name: `/leader`, value: `Various information about the server`},
                 {name: `/help`, value: `Show the help menu`},
                 {name: `\u200B`, value: '-- Leader-only commands --'},
-                {name: `/ban`, value: `Begin a ban vote, the peasants will get 24 hours to vote`}
+                {name: `/banvote`, value: `Begin a ban vote, the peasants will get 24 hours to vote`}
             )
         
             await interaction.reply({embeds:[message]})
