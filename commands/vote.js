@@ -1,10 +1,27 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("elect")
-    .setDescription("Cast or change your vote!"),
+    .setName("vote")
+    .setDescription("Cast or change your vote!")
+    .addUserOption((option) =>
+      option
+        .setName("user")
+        .setDescription("Who you are voting for")
+        .setRequired(true)
+    ),
+
   async execute(interaction) {
-    await interaction.reply();
+    const voter = interaction.user;
+    const voterId = voter.id;
+    const votee = interaction.options.getUser("user");
+    const voteeId = votee.id;
+
+    const message = new EmbedBuilder()
+      .setTitle("You just cast your vote")
+      .setDescription(`${voter} voted for ${votee}`)
+      .setColor(0x00ff00);
+
+    await interaction.reply({ embeds: [message] });
   },
 };
