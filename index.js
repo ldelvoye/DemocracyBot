@@ -3,8 +3,14 @@ const path = require("node:path");
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
 const { token } = require("./config.json");
 const { db } = require("./database/database_operations");
+const welcome = require("./welcome.js");
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+  ]
+});
 
 client.commands = new Collection();
 // db.sync_all_tables();
@@ -22,6 +28,7 @@ for (const file of commandFiles) {
 
 client.once("ready", () => {
   console.log("Ready!");
+  welcome(client)
 });
 
 client.on("interactionCreate", async (interaction) => {
