@@ -44,8 +44,8 @@ class DatabaseOperations {
     return leader;
   }
 
-  selectCandidateVotedFor(voterid) {
-    const candidate = Voters.findAll({
+  async selectCandidateVotedFor(voterid) {
+    const candidate = await Voters.findAll({
       attributes: ["candidate"],
       where: {
         voterID: voterid,
@@ -55,8 +55,8 @@ class DatabaseOperations {
     return candidate;
   }
 
-  async updateVoters(voterid, candidateid) {
-    await Voters.update(
+  async updateCandidate(voterid, candidateid) {
+    const x = await Voters.update(
       { candidate: candidateid },
       {
         where: {
@@ -65,20 +65,8 @@ class DatabaseOperations {
       }
     );
 
-    console.log(`Voter ${voterid} has been updated!`);
-  }
-
-  async updateCandidate(candidateid) {
-    await Voters.update(
-      { candidate: candidateid },
-      {
-        where: {
-          voterID: voterid,
-        },
-      }
-    );
-
-    console.log(`Leader has been updated!`);
+    console.log(`Candidate ${candidateid} has been voted for by ${voterid}!`);
+    return x;
   }
 
   async updateLeaderboard(voterid) {

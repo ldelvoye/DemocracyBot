@@ -18,6 +18,17 @@ module.exports = {
     const votee = interaction.options.getUser("user");
     const voteeId = votee.id;
 
+    /* 
+      first check if voter exists in db
+        if does, then update voteeID
+        go to voteeID and update their count
+      if does not exist then
+        create new entry in db with voterid, voteeid, vote, and leader=false
+        go to voteeID and update count
+    */
+
+    db.select;
+
     const message = new EmbedBuilder()
       .setTitle("You just cast your vote")
       .setDescription(`${voter} voted for ${votee}`)
