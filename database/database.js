@@ -4,7 +4,6 @@ const { postgres } = require("../config.json");
 class Database extends Sequelize {
   constructor(options = {}) {
     super(postgres.url);
-    this.boot();
   }
 
   async boot() {
@@ -14,4 +13,6 @@ class Database extends Sequelize {
   }
 }
 
-module.exports = { Database };
+const database = new Database();
+
+module.exports = { database };
