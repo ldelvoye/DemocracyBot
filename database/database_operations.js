@@ -44,13 +44,34 @@ class DatabaseOperations {
     return leader;
   }
 
-  async selectCandidateVotedFor(voterid) {
-    const candidate = await Voters.findAll({
-      attributes: ["candidate"],
-      where: {
-        voterID: voterid,
+  async selectVoter(voterid) {
+    const voter = await Voters.findAll(
+      {
+        attributes: ["voterID"],
+        where: {
+          voterID: voterid,
+        },
       },
-    });
+      {
+        raw: true,
+      }
+    );
+
+    return voter;
+  }
+
+  async selectCandidateVotedFor(voterid) {
+    const candidate = await Voters.findAll(
+      {
+        attributes: ["candidate"],
+        where: {
+          voterID: voterid,
+        },
+      },
+      {
+        raw: true,
+      }
+    );
 
     return candidate;
   }
@@ -62,10 +83,12 @@ class DatabaseOperations {
         where: {
           voterID: voterid,
         },
+      },
+      {
+        raw: true,
       }
     );
 
-    console.log(`Candidate ${candidateid} has been voted for by ${voterid}!`);
     return x;
   }
 
