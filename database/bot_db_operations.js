@@ -97,7 +97,7 @@ const updateLeaderboard = function () {
   });
 };
 
-const getCurrentLeader = function () {};
+const getUserInformation = function () {};
 
 const getCurrentVote = function () {};
 
