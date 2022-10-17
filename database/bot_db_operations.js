@@ -10,16 +10,18 @@ class BotOperations {
   }
 
   async checkIfVoterExists(voterid) {
-    var result = [];
-    this.db.selectVoter(voterid).then((data) => {
-      if (data.length === 0) {
-        return "User doesn't exist!";
-      } else {
-        (data) => data.forEach((element) => result.push(element));
-      }
-    });
-
-    return result;
+    try {
+      this.db.selectVoter(voterid).then((data) => {
+        if (data.length === 0) {
+          return "User doesn't exist!";
+        } else {
+          return "User exists";
+        }
+      });
+    } catch (err) {
+      console.error(err.message);
+      return err.message;
+    }
   }
 
   //   async updateVoterCandidate() {}

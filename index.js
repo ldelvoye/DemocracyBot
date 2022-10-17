@@ -6,10 +6,7 @@ const { db } = require("./database/database_operations");
 const welcome = require("./welcome.js");
 
 const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-  ]
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 });
 
 client.commands = new Collection();
@@ -28,7 +25,7 @@ for (const file of commandFiles) {
 
 client.once("ready", () => {
   console.log("Ready!");
-  welcome(client)
+  welcome(client);
 });
 
 client.on("interactionCreate", async (interaction) => {

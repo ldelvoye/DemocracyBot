@@ -1,5 +1,5 @@
-const {SlashCommandBuilder, EmbedBuilder} = require("discord.js");
-const {db} = require("../database/database_operations");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { db } = require("../database/database_operations");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -27,7 +27,13 @@ module.exports = {
         go to voteeID and update count
     */
 
-    db.select;
+    db.selectVoter("1223").then((data) => {
+      if (data.length === 0) {
+        console.log("User doesn't exist!");
+      } else {
+        console.log("User exists");
+      }
+    });
 
     const message = new EmbedBuilder()
       .setTitle("You just cast your vote")

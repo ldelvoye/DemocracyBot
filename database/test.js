@@ -30,8 +30,16 @@
 
 // // console.log(database.models);
 
-// const { db } = require("./database_operations");
-// const { Voters } = require("./models/voters");
+const { db } = require("./database_operations");
+const { Voters } = require("./models/voters");
+
+db.selectVoter("1223").then((data) => {
+  if (data.length === 0) {
+    console.log("User doesn't exist!");
+  } else {
+    console.log("User exists");
+  }
+});
 
 // // // console.log(db.testMethod());
 // const testRow = db.selectCandidateVotedFor("1223").then((data) => {
@@ -42,10 +50,12 @@
 //   }
 // });
 
-const { botops } = require("./bot_db_operations");
+// const { botops } = require("./bot_db_operations");
 
-const x = botops.checkIfVoterExists(1223).then((data) => console.log(data));
-console.log(x);
+// botops
+//   .checkIfVoterExists(1223)
+//   .then((data) => console.log(data))
+//   .catch((err) => console.log(err));
 // console.log(JSON.stringify(testRow, null, 2));
 // console.log(testRow);
 // x = db
