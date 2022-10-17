@@ -15,19 +15,20 @@ class DatabaseOperations {
     await this.db.sync({ force: true });
   }
 
-  async incrementVotes(voterid) {
-    await Voters.increment({ votes: 1 }), { where: { voterID: voterid } };
+  async incrementVotes(candidateid) {
+    await Voters.increment({ votes: 1 }, { where: { voterID: candidateid } });
   }
 
-  async decrementVotes(voterid) {
-    await Voters.decrement({ votes: 1 }), { where: { voterID: voterid } };
+  async decrementVotes(candidateid) {
+    await Voters.increment({ votes: -1 }, { where: { voterID: candidateid } });
   }
 
-  async insertIntoVoters(voterid, candidateid) {
+  async insertIntoVoters(voterid, candidateid, vote = 0) {
     const voter = await Voters.create({
       voterID: voterid,
       candidate: candidateid,
       leader: false,
+      votes: vote,
     });
 
     console.log(`Voter ${voter.voterID} has been created!`);
@@ -40,6 +41,22 @@ class DatabaseOperations {
         leader: true,
       },
     });
+
+    return leader;
+  }
+
+  async selectLeaderWithVotes(votes) {
+    const leader = await Voters.findAll(
+      {
+        attributes: ["voterID"],
+        where: {
+          votes: votes,
+        },
+      },
+      {
+        raw: true,
+      }
+    );
 
     return leader;
   }
@@ -60,7 +77,7 @@ class DatabaseOperations {
     return voter;
   }
 
-  async selectCandidateVotedFor(voterid) {
+  async selectCandidate(voterid) {
     const candidate = await Voters.findAll(
       {
         attributes: ["candidate"],
@@ -103,6 +120,24 @@ class DatabaseOperations {
     );
 
     console.log(`Leaderboard has been updated!`);
+  }
+
+  async deleteOldLeader(voterid) {
+    await Voters.update(
+      { leader: false },
+      {
+        where: {
+          voterID: voterid,
+        },
+      }
+    );
+    console.log(`Old Leader has been deleted!`);
+  }
+
+  async selectMaxVotes() {
+    const maxVotes = await Voters.max("votes");
+
+    return maxVotes;
   }
 
   async deleteFromVoters(voterid) {

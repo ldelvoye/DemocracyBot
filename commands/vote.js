@@ -1,5 +1,9 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { db } = require("../database/database_operations");
+const { update } = require("sequelize/lib/model");
+const {
+  updateVotes,
+  updateLeaderboad,
+} = require("../database/bot_db_operations");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -27,13 +31,8 @@ module.exports = {
         go to voteeID and update count
     */
 
-    db.selectVoter("1223").then((data) => {
-      if (data.length === 0) {
-        console.log("User doesn't exist!");
-      } else {
-        console.log("User exists");
-      }
-    });
+    updateVotes(voterId, voteeId);
+    updateLeaderboad();
 
     const message = new EmbedBuilder()
       .setTitle("You just cast your vote")
