@@ -97,9 +97,9 @@ const updateLeaderboard = function () {
   });
 };
 
-const getUserInformation = function () {};
+const getUserInformation = function (userId) {};
 
-const getCurrentVote = function () {};
+const getCurrentLeader = function () {};
 
 module.exports = {
   updateVotes,
