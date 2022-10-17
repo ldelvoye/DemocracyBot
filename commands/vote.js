@@ -1,8 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { update } = require("sequelize/lib/model");
 const {
   updateVotes,
-  updateLeaderboad,
+  updateLeaderboard,
 } = require("../database/bot_db_operations");
 
 module.exports = {
@@ -32,7 +31,7 @@ module.exports = {
     */
 
     updateVotes(voterId, voteeId);
-    updateLeaderboad();
+    updateLeaderboard();
 
     const message = new EmbedBuilder()
       .setTitle("You just cast your vote")

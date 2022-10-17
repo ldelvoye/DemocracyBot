@@ -74,7 +74,7 @@ const updateVotes = function (voterID, voteeID) {
   });
 };
 
-const updateLeaderboad = function () {
+const updateLeaderboard = function () {
   db.selectMaxVotes().then((data) => {
     db.selectLeaderWithVotes(data).then((data) => {
       data.forEach((element) => {
@@ -97,7 +97,13 @@ const updateLeaderboad = function () {
   });
 };
 
+const getCurrentLeader = function () {};
+
+const getCurrentVote = function () {};
+
 module.exports = {
   updateVotes,
-  updateLeaderboad,
+  updateLeaderboard,
+  getCurrentLeader,
+  getCurrentVote,
 };
