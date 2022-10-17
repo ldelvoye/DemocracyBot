@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const {
   getCurrentLeader,
-  getCurrentVote,
+  getUserInformation,
 } = require("../database/bot_db_operations");
 
 module.exports = {

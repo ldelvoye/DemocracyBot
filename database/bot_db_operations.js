@@ -105,5 +105,5 @@ module.exports = {
   updateVotes,
   updateLeaderboard,
   getCurrentLeader,
-  getCurrentVote,
+  getUserInformation,
 };
