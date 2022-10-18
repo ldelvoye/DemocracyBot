@@ -36,17 +36,31 @@ module.exports = {
 
     await interaction.reply({ embeds: [message] })
 
-    const currentLeader = await getCurrentLeader();
-    console.log('Current leader', currentLeader)
-    const newLeader = await updateLeaderboard();
-    console.log('New leader?', newLeader)
-    if (newLeader !== 0) {
-      const leaderChange = new EmbedBuilder()
+    const temp = await updateLeaderboard()
+    const leaders = Object.values(temp)
+    const oldLeaderId = Number(leaders[0])
+    const newLeaderId = Number(leaders[1])
+
+    if (newLeaderId !== 0) {
+      const leaderChangeMessage = new EmbedBuilder()
         .setTitle("New Leader!")
-        .setDescription(`Congratulations, <@${newLeader}>, you are the new leader!`)
+        .setDescription(`Congratulations, <@${leaders[1]}>, you are the new leader!`)
         .setColor(0x7DF9FF)
       
-      await interaction.followUp({ embeds: [leaderChange]})
+      const rolePleb = interaction.guild.roles.cache.find(r => r.id === "1031334547591274556")
+      const roleLeader = interaction.guild.roles.cache.find(r => r.id === "1031329937287807046")
+
+      if (oldLeaderId !== 0) {
+        const oldLeader = await interaction.member.fetch(oldLeaderId)
+        oldLeader.roles.add(rolePleb)
+        oldLeader.roles.remove(roleLeader)
+      }
+
+      const newLeader = await interaction.member.fetch(newLeaderId)
+      newLeader.roles.add(roleLeader)
+      newLeader.roles.remove(rolePleb)
+
+      await interaction.followUp({ embeds: [leaderChangeMessage]})
     }
   },
 };

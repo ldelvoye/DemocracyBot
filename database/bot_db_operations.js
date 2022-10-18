@@ -63,23 +63,18 @@ const updateLeaderboard = async () => {
     await db.updateLeaderboard(leaderID.leader_0);
     const newLeader = await db.selectLeader();
     return {
-      currentLeader: 0,
       newLeader: newLeader.voterID,
     };
   } else if (
     Object.values(leaderID).includes(currentLeader.voterID) &&
     maxVotes !== 0
   ) {
-    return {
-      currentLeader: currentLeader.voterID,
-      newLeader: 0,
-    };
+    return 0;
   } else if (Object.values(leaderID).includes(currentLeader.voterID) == false) {
     await db.updateLeaderboard(leaderID.leader_0);
     await db.deleteOldLeader(currentLeader.voterID);
     const newLeader = leaderID.leader_0;
     return {
-      currentLeader: currentLeader.voterID,
       newLeader: newLeader,
     };
   } else {
@@ -105,19 +100,10 @@ const resetLeaderboard = async () => {
   await db.destroyLeaderboard();
 };
 
-const removeVoter = async (voterID) => {
-  const user = await db.selectVoter(voterID);
-  if (user.candidateID !== 0) {
-    await db.decrementVotes(user.candidateID);
-  }
-  await db.deleteFromVoters(voterID);
-};
-
 module.exports = {
   updateVotes,
   updateLeaderboard,
   getUserInformation,
   getCurrentLeader,
   resetLeaderboard,
-  removeVoter,
 };
