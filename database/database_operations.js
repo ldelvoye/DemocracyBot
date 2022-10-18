@@ -50,7 +50,7 @@ class DatabaseOperations {
       };
       return result;
     } else {
-      return "No leader exists!";
+      return 0;
     }
   }
 
