@@ -25,11 +25,15 @@ module.exports = {
     updateLeaderboard();
 
     const message = new EmbedBuilder()
-      .setTitle("You just cast your vote")
-      .setColor(0x00ff00);
       if (votee.bot === true) {
-        message.setDescription(`**Error!** You cannot vote for a bot`)
-      } else {message.setDescription(`${voter} voted for ${votee}`)}
+        message.setTitle("Error")
+        message.setDescription(`You cannot vote for a bot`)
+        message.setColor(0xA020F0)
+      } else {
+        message.setTitle("You just cast your vote")
+        message.setDescription(`${voter} voted for ${votee}`)
+        message.setColor(0x00ff00)
+      }
 
     await interaction.reply({ embeds: [message] });
   },
