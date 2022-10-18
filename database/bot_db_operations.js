@@ -79,7 +79,7 @@ const updateLeaderboard = async () => {
       newLeader: newLeader,
     };
   } else {
-    await db.updateLeaderboard(322332);
+    await db.resetLeader();
     return "Leader doesn't exist! Vote for someone now to bring forth the LEADER!";
   }
 };
@@ -97,9 +97,15 @@ const getCurrentLeader = async () => {
   return leader.voterID;
 };
 
+const resetLeaderboard = async () => {
+  await db.resetLeader();
+  await db.resetVotes();
+};
+
 module.exports = {
   updateVotes,
   updateLeaderboard,
   getUserInformation,
   getCurrentLeader,
+  resetLeaderboard,
 };

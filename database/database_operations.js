@@ -172,6 +172,15 @@ class DatabaseOperations {
 
     console.log(`Voter ${voterid} has been deleted!`);
   }
+
+  async resetVotes() {
+    await Voters.update({ votes: 0 }, { where: { leader: false } });
+  }
+
+  async resetLeader() {
+    await Voters.update({ leader: false }, { where: { leader: true } });
+    await this.updateLeaderboard(0);
+  }
 }
 
 db = new DatabaseOperations();

@@ -31,38 +31,12 @@
 // // console.log(database.models);
 
 const { db } = require("./database_operations");
-const updateLeaderboard = async () => {
-  const maxVotes = await db.selectMaxVotes();
-  const leaderID = await db.selectLeaderWithVotes(maxVotes);
-  const currentLeader = await db.selectLeader();
-  if (currentLeader == "No leader exists!" && maxVotes !== 0) {
-    await db.updateLeaderboard(leaderID.leader_0);
-    const newLeader = await db.selectLeader();
-    return {
-      oldLeader: "No Previous Leader",
-      newLeader: newLeader.voterID,
-    };
-  } else if (
-    Object.values(leaderID).includes(currentLeader.voterID) &&
-    maxVotes !== 0
-  ) {
-    return {
-      currentleader: currentLeader.voterID,
-      newleader: "Same Leader",
-    };
-  } else if (Object.values(leaderID).includes(currentLeader.voterID) == false) {
-    await db.updateLeaderboard(leaderID.leader_0);
-    await db.deleteOldLeader(currentLeader.voterID);
-    const newLeader = leaderID.leader_0;
-    return {
-      oldLeader: currentLeader.voterID,
-      newLeader: newLeader,
-    };
-  } else {
-    return "Leader doesn't exist! Vote for someone now to bring forth the LEADER!";
-  }
+const resetLeaderboard = async () => {
+  await db.resetLeader();
+  await db.resetVotes();
 };
-console.log(updateLeaderboard());
+
+resetLeaderboard();
 
 // const updatevoter = async (voterid, voteeid) => {
 //   const voter = await db.selectVoter(voterid);
