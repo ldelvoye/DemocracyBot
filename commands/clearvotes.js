@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-// const resetLeaderboard = require("../database/bot_db_operations")
+const { resetLeaderboard } = require("../database/bot_db_operations");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,6 +8,7 @@ module.exports = {
   
   async execute(interaction) {
     console.log('resetting leaderboard')
+    await resetLeaderboard();
 
     const message = new EmbedBuilder()
       .setTitle('Leaderboard successfully reset')

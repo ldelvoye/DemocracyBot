@@ -25,7 +25,7 @@ module.exports = {
       if (votee.bot === true) {
         message.setTitle("Error")
         message.setDescription(`You cannot vote for a bot`)
-        message.setColor(0xA020F0)
+        message.setColor(0x7CFC00)
       } else {
         message.setTitle("You just cast your vote")
         message.setDescription(`${voter} voted for ${votee}`)
@@ -33,14 +33,18 @@ module.exports = {
         updateVotes(voterId, voteeId);
       }
 
-    await interaction.reply({ embeds: [message] });
+    await interaction.reply({ embeds: [message] })
 
     newLeader = await updateLeaderboard();
+    console.log(newLeader)
     if (newLeader !== 0) {
       const leaderChange = new EmbedBuilder()
         .setTitle("New Leader!")
         .setDescription(`Congratulations, <@${newLeader}>, you are the new leader!`)
+        .setColor(0x7DF9FF)
       // role change
+
+      await interaction.followUp({ embeds: [leaderChange]})
     }
   },
 };
