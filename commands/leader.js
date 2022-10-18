@@ -21,7 +21,7 @@ module.exports = {
     const message = new EmbedBuilder()
       .setTitle("Current information about the server")
       .setColor(0xf4c2c2);
-    if (leader !== 0) {
+    if (leader === 0) {
       message.addFields({
         name: `Leader`,
         value: `There is currently no leader. Quick, vote for someone to change that!`,
@@ -29,7 +29,7 @@ module.exports = {
     } else {
       message.addFields({
         name: `Leader`,
-        value: `The current leader is ${leader} with ${leaderInfo.votes} votes`,
+        value: `The current leader is <@${leader}> with ${leaderInfo.votes} votes`,
       });
     }
     message.addFields({
