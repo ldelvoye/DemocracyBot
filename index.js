@@ -3,7 +3,8 @@ const path = require("node:path");
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
 const { token } = require("./config.json");
 const { db } = require("./database/database_operations");
-const welcome = require("./welcome.js");
+const welcome = require("./modules/welcome.js");
+const goodbye = require("./modules/goodbye");
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
@@ -26,6 +27,7 @@ for (const file of commandFiles) {
 client.once("ready", () => {
   console.log("Ready!");
   welcome(client);
+  goodbye(client);
 });
 
 client.on("interactionCreate", async (interaction) => {
