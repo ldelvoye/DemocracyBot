@@ -38,7 +38,12 @@ const updateVotes = async (voterid, voteeid) => {
   const prevCandidate = voter.candidateID;
 
   if (voter === `Voter with id ${voterid} does not exist!`) {
-    await db.insertIntoVoters(voterid, voteeid);
+    if (voterid === voteeid) {
+      await db.insertIntoVoters(voterid, voteeid, 1);
+      return;
+    } else {
+      await db.insertIntoVoters(voterid, voteeid);
+    }
   } else {
     if (prevCandidate !== "0") {
       await db.decrementVotes(prevCandidate);
@@ -51,12 +56,9 @@ const updateVotes = async (voterid, voteeid) => {
   } else {
     await db.incrementVotes(voteeid);
   }
-
-  newVoterStats = await db.selectVoter(voterid);
-  newCandidate = newVoterStats.candidateID;
 };
 
-updateVotes(1234, 108);
+updateVotes(122, 122);
 
 // const updatevoter = async (voterid, voteeid) => {
 //   const voter = await db.selectVoter(voterid);
