@@ -32,15 +32,8 @@
 
 const { db } = require("./database_operations");
 
-const removeVoter = async (voterID) => {
-  const user = await db.selectVoter(voterID);
-  if (user.candidateID !== 0) {
-    console.log(user.candidateID);
-    await db.decrementVotes(user.candidateID);
-  }
-  await db.deleteFromVoters(voterID);
-};
-removeVoter("636612845341245442");
+const k = "123864863476374";
+console.log(Number(k));
 
 // const updatevoter = async (voterid, voteeid) => {
 //   const voter = await db.selectVoter(voterid);
