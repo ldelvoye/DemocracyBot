@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const {
   updateVotes,
   updateLeaderboard,
+  getCurrentLeader,
 } = require("../database/bot_db_operations");
 
 module.exports = {
@@ -35,15 +36,16 @@ module.exports = {
 
     await interaction.reply({ embeds: [message] })
 
-    newLeader = await updateLeaderboard();
-    console.log(newLeader)
+    const currentLeader = await getCurrentLeader();
+    console.log('Current leader', currentLeader)
+    const newLeader = await updateLeaderboard();
+    console.log('New leader?', newLeader)
     if (newLeader !== 0) {
       const leaderChange = new EmbedBuilder()
         .setTitle("New Leader!")
         .setDescription(`Congratulations, <@${newLeader}>, you are the new leader!`)
         .setColor(0x7DF9FF)
-      // role change
-
+      
       await interaction.followUp({ embeds: [leaderChange]})
     }
   },

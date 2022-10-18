@@ -1,6 +1,3 @@
-const { getCurrentLeader } = require("../database/bot_db_operations")
-
-
 module.exports = client => {
     client.on('guildMemberAdd', member => {
         console.log(member.id)

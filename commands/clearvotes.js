@@ -1,10 +1,11 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const { resetLeaderboard } = require("../database/bot_db_operations");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('clearvotes')
-    .setDescription('Clears the leaderboard -admin command'),
+    .setDescription('Clears the leaderboard -admin command')
+    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
   
   async execute(interaction) {
     console.log('resetting leaderboard')
