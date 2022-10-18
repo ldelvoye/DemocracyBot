@@ -37,7 +37,9 @@ const updateVotes = async (voterid, voteeid) => {
   if (voter === `Voter with id ${voterid} does not exist!`) {
     await db.insertIntoVoters(voterid, voteeid);
   } else {
-    await db.decrementVotes(prevCandidate);
+    if (prevCandidate !== "0") {
+      await db.decrementVotes(prevCandidate);
+    }
     await db.updateCandidate(voterid, voteeid);
   }
 
@@ -46,9 +48,6 @@ const updateVotes = async (voterid, voteeid) => {
   } else {
     await db.incrementVotes(voteeid);
   }
-
-  newVoterStats = await db.selectVoter(voterid);
-  newCandidate = newVoterStats.candidateID;
 };
 
 const updateLeaderboard = async () => {
@@ -59,28 +58,23 @@ const updateLeaderboard = async () => {
     await db.updateLeaderboard(leaderID.leader_0);
     const newLeader = await db.selectLeader();
     return {
-      oldLeader: null,
       newLeader: newLeader.voterID,
     };
   } else if (
     Object.values(leaderID).includes(currentLeader.voterID) &&
     maxVotes !== 0
   ) {
-    return {
-      currentleader: currentLeader.voterID,
-      newleader: currentLeader.voterID,
-    };
+    return 0;
   } else if (Object.values(leaderID).includes(currentLeader.voterID) == false) {
     await db.updateLeaderboard(leaderID.leader_0);
     await db.deleteOldLeader(currentLeader.voterID);
     const newLeader = leaderID.leader_0;
     return {
-      oldLeader: currentLeader.voterID,
       newLeader: newLeader,
     };
   } else {
     await db.updateLeaderboard(0);
-    return "Leader doesn't exist! Vote for someone now to bring forth the LEADER!";
+    return 0;
   }
 };
 

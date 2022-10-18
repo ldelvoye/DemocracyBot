@@ -31,12 +31,32 @@
 // // console.log(database.models);
 
 const { db } = require("./database_operations");
-const resetLeaderboard = async () => {
-  await db.resetLeader();
-  await db.resetVotes();
+
+const updateVotes = async (voterid, voteeid) => {
+  const voter = await db.selectVoter(voterid);
+  const votee = await db.selectVoter(voteeid);
+  const prevCandidate = voter.candidateID;
+
+  if (voter === `Voter with id ${voterid} does not exist!`) {
+    await db.insertIntoVoters(voterid, voteeid);
+  } else {
+    if (prevCandidate !== "0") {
+      await db.decrementVotes(prevCandidate);
+    }
+    await db.updateCandidate(voterid, voteeid);
+  }
+
+  if (votee == `Voter with id ${voteeid} does not exist!`) {
+    await db.insertIntoVoters(voteeid, 0, 1);
+  } else {
+    await db.incrementVotes(voteeid);
+  }
+
+  newVoterStats = await db.selectVoter(voterid);
+  newCandidate = newVoterStats.candidateID;
 };
 
-resetLeaderboard();
+updateVotes(1234, 108);
 
 // const updatevoter = async (voterid, voteeid) => {
 //   const voter = await db.selectVoter(voterid);
