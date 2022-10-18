@@ -21,9 +21,6 @@ module.exports = {
     const votee = interaction.options.getUser("user");
     const voteeId = votee.id;
 
-    updateVotes(voterId, voteeId);
-    updateLeaderboard();
-
     const message = new EmbedBuilder()
       if (votee.bot === true) {
         message.setTitle("Error")
@@ -33,6 +30,8 @@ module.exports = {
         message.setTitle("You just cast your vote")
         message.setDescription(`${voter} voted for ${votee}`)
         message.setColor(0x00ff00)
+        updateVotes(voterId, voteeId);
+        updateLeaderboard();
       }
 
     await interaction.reply({ embeds: [message] });

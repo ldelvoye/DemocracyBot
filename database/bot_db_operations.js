@@ -55,7 +55,7 @@ const updateLeaderboard = async () => {
   const maxVotes = await db.selectMaxVotes();
   const leaderID = await db.selectLeaderWithVotes(maxVotes);
   const currentLeader = await db.selectLeader();
-  if (currentLeader == 0 && maxVotes !== 0) {
+  if (currentLeader === 0 && maxVotes !== 0) {
     await db.updateLeaderboard(leaderID.leader_0);
     const newLeader = await db.selectLeader();
     return {
@@ -84,7 +84,7 @@ const updateLeaderboard = async () => {
 };
 
 const getUserInformation = async (voterID) => {
-  if (voterID == 0) {
+  if (voterID === 0) {
     return 0;
   }
   const user = await db.selectVoter(voterID);
