@@ -48,9 +48,6 @@ const updateVotes = async (voterid, voteeid) => {
   } else {
     await db.incrementVotes(voteeid);
   }
-
-  newVoterStats = await db.selectVoter(voterid);
-  newCandidate = newVoterStats.candidateID;
 };
 
 const updateLeaderboard = async () => {
