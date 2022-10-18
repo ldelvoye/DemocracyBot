@@ -31,9 +31,16 @@ module.exports = {
         message.setDescription(`${voter} voted for ${votee}`)
         message.setColor(0x00ff00)
         updateVotes(voterId, voteeId);
-        updateLeaderboard();
       }
 
     await interaction.reply({ embeds: [message] });
+
+    newLeader = await updateLeaderboard();
+    if (newLeader !== 0) {
+      const leaderChange = new EmbedBuilder()
+        .setTitle("New Leader!")
+        .setDescription(`Congratulations, <@${newLeader}>, you are the new leader!`)
+      // role change
+    }
   },
 };

@@ -59,7 +59,7 @@ const updateLeaderboard = async () => {
     await db.updateLeaderboard(leaderID.leader_0);
     const newLeader = await db.selectLeader();
     return {
-      oldLeader: "No Previous Leader",
+      oldLeader: null,
       newLeader: newLeader.voterID,
     };
   } else if (
@@ -68,7 +68,7 @@ const updateLeaderboard = async () => {
   ) {
     return {
       currentleader: currentLeader.voterID,
-      newleader: "Same Leader",
+      newleader: currentLeader.voterID,
     };
   } else if (Object.values(leaderID).includes(currentLeader.voterID) == false) {
     await db.updateLeaderboard(leaderID.leader_0);
