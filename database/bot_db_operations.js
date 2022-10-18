@@ -79,7 +79,7 @@ const updateLeaderboard = async () => {
       newLeader: newLeader,
     };
   } else {
-    await db.resetLeader();
+    await db.updateLeaderboard(0);
     return "Leader doesn't exist! Vote for someone now to bring forth the LEADER!";
   }
 };
