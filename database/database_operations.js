@@ -36,35 +36,44 @@ class DatabaseOperations {
   }
 
   async selectLeader() {
-    const leader = await Voters.findAll({
+    const leader = await Voters.findOne({
       where: {
         leader: true,
       },
     });
-
-    return leader;
+    if (leader !== null) {
+      const result = {
+        voterID: leader["dataValues"]["voterID"],
+        // candidateID: leader["dataValues"]["candidate"],
+        // leader: leader["dataValues"]["leader"],
+        // votes: leader["dataValues"]["votes"],
+      };
+      return result;
+    } else {
+      return "No leader exists!";
+    }
   }
 
   async selectLeaderWithVotes(votes) {
-    const leader = await Voters.findAll(
-      {
-        attributes: ["voterID"],
-        where: {
-          votes: votes,
-        },
+    const leader = await Voters.findAll({
+      attributes: ["voterID"],
+      where: {
+        votes: votes,
       },
-      {
-        raw: true,
-      }
-    );
+    });
 
-    return leader;
+    const result = {};
+
+    for (let i = 0; i < leader.length; i++) {
+      result[`leader_${i}`] = leader[i]["dataValues"]["voterID"];
+    }
+
+    return result;
   }
 
   async selectVoter(voterid) {
-    const voter = await Voters.findAll(
+    const voter = await Voters.findOne(
       {
-        attributes: ["voterID"],
         where: {
           voterID: voterid,
         },
@@ -73,6 +82,18 @@ class DatabaseOperations {
         raw: true,
       }
     );
+
+    if (voter !== null) {
+      const result = {
+        voterID: voter["dataValues"]["voterID"],
+        candidateID: voter["dataValues"]["candidate"],
+        leader: voter["dataValues"]["leader"],
+        votes: voter["dataValues"]["votes"],
+      };
+      return result;
+    } else {
+      return `Voter with id ${voterid} does not exist!`;
+    }
 
     return voter;
   }
@@ -136,6 +157,8 @@ class DatabaseOperations {
 
   async selectMaxVotes() {
     const maxVotes = await Voters.max("votes");
+
+    // const maxvotes = maxVotes;
 
     return maxVotes;
   }
