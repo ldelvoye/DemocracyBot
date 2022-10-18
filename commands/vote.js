@@ -41,12 +41,7 @@ module.exports = {
     const oldLeaderId = Number(leaders[0])
     const newLeaderId = Number(leaders[1])
 
-    if (newLeaderId !== 0) {
-      const leaderChangeMessage = new EmbedBuilder()
-        .setTitle("New Leader!")
-        .setDescription(`Congratulations, <@${leaders[1]}>, you are the new leader!`)
-        .setColor(0x7DF9FF)
-      
+    if (newLeaderId !== 0) {      
       const rolePleb = interaction.guild.roles.cache.find(r => r.id === "1031334547591274556")
       const roleLeader = interaction.guild.roles.cache.find(r => r.id === "1031329937287807046")
 
@@ -59,6 +54,11 @@ module.exports = {
       const newLeader = await interaction.member.fetch(newLeaderId)
       newLeader.roles.add(roleLeader)
       newLeader.roles.remove(rolePleb)
+
+      const leaderChangeMessage = new EmbedBuilder()
+        .setTitle("New Leader!")
+        .setDescription(`Congratulations, ${newLeader}, you are the new leader!`)
+        .setColor(0x7DF9FF)
 
       await interaction.followUp({ embeds: [leaderChangeMessage]})
     }
