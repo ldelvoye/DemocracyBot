@@ -173,12 +173,9 @@ class DatabaseOperations {
     console.log(`Voter ${voterid} has been deleted!`);
   }
 
-  async resetVotes() {
-    await Voters.update({ votes: 0 }, { where: { leader: false } });
-  }
-
-  async resetLeader() {
-    await Voters.update({ leader: false }, { where: { leader: true } });
+  async destroyLeaderboard() {
+    await Voters.destroy({ truncate: true });
+    await this.insertIntoVoters(0, 0);
     await this.updateLeaderboard(0);
   }
 }

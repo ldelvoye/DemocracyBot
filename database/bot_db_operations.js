@@ -98,8 +98,7 @@ const getCurrentLeader = async () => {
 };
 
 const resetLeaderboard = async () => {
-  await db.resetLeader();
-  await db.resetVotes();
+  await db.destroyLeaderboard();
 };
 
 module.exports = {
