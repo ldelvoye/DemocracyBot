@@ -26,8 +26,10 @@ module.exports = {
 
     const message = new EmbedBuilder()
       .setTitle("You just cast your vote")
-      .setDescription(`${voter} voted for ${votee}`)
       .setColor(0x00ff00);
+      if (votee.bot === true) {
+        message.setDescription(`**Error!** You cannot vote for a bot`)
+      } else {message.setDescription(`${voter} voted for ${votee}`)}
 
     await interaction.reply({ embeds: [message] });
   },
