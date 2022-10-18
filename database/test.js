@@ -32,33 +32,15 @@
 
 const { db } = require("./database_operations");
 
-const updateVotes = async (voterid, voteeid) => {
-  const voter = await db.selectVoter(voterid);
-  const votee = await db.selectVoter(voteeid);
-  const prevCandidate = voter.candidateID;
-
-  if (voter === `Voter with id ${voterid} does not exist!`) {
-    if (voterid === voteeid) {
-      await db.insertIntoVoters(voterid, voteeid, 1);
-      return;
-    } else {
-      await db.insertIntoVoters(voterid, voteeid);
-    }
-  } else {
-    if (prevCandidate !== "0") {
-      await db.decrementVotes(prevCandidate);
-    }
-    await db.updateCandidate(voterid, voteeid);
+const removeVoter = async (voterID) => {
+  const user = await db.selectVoter(voterID);
+  if (user.candidateID !== 0) {
+    console.log(user.candidateID);
+    await db.decrementVotes(user.candidateID);
   }
-
-  if (votee == `Voter with id ${voteeid} does not exist!`) {
-    await db.insertIntoVoters(voteeid, 0, 1);
-  } else {
-    await db.incrementVotes(voteeid);
-  }
+  await db.deleteFromVoters(voterID);
 };
-
-updateVotes(122, 122);
+removeVoter("636612845341245442");
 
 // const updatevoter = async (voterid, voteeid) => {
 //   const voter = await db.selectVoter(voterid);
