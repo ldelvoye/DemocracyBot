@@ -63,9 +63,12 @@ class DatabaseOperations {
     });
 
     const result = {};
-
-    for (let i = 0; i < leader.length; i++) {
-      result[`leader_${i}`] = leader[i]["dataValues"]["voterID"];
+    if (Object.keys(leader).length !== 0) {
+      for (let i = 0; i < leader.length; i++) {
+        result[`leader_${i}`] = leader[i]["dataValues"]["voterID"];
+      }
+    } else {
+      return 0;
     }
 
     return result;
