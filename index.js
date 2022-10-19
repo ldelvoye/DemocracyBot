@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, GatewayIntentBits } = require("discord.js");
-const { token } = require("./config.json");
+const { token } = process.env.TOKEN
 const { db } = require("./database/database_operations");
 const welcome = require("./modules/welcome.js");
 const goodbye = require("./modules/goodbye");
