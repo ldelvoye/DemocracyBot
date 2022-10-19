@@ -32,8 +32,41 @@
 
 const { db } = require("./database_operations");
 
-const k = "123864863476374";
-console.log(Number(k));
+const updateLeaderboard = async () => {
+  const maxVotes = await db.selectMaxVotes();
+  const leaderID = await db.selectLeaderWithVotes(maxVotes);
+  const currentLeader = await db.selectLeader();
+  if (currentLeader === 0 && maxVotes !== 0) {
+    await db.updateLeaderboard(leaderID.leader_0);
+    const newLeader = await db.selectLeader();
+    return {
+      currentLeader: 0,
+      newLeader: newLeader.voterID,
+    };
+  } else if (
+    Object.values(leaderID).includes(currentLeader.voterID) &&
+    maxVotes !== 0
+  ) {
+    return {
+      currentLeader: currentLeader.voterID,
+      newLeader: 0,
+    };
+  } else if (Object.values(leaderID).includes(currentLeader.voterID) == false) {
+    console.log(leaderID.voterID);
+    await db.updateLeaderboard(leaderID.leader_0);
+    await db.deleteOldLeader(currentLeader.voterID);
+    const newLeader = leaderID.leader_0;
+    return {
+      currentLeader: currentLeader.voterID,
+      newLeader: newLeader,
+    };
+  } else {
+    await db.updateLeaderboard(0);
+    return 0;
+  }
+};
+
+updateLeaderboard();
 
 // const updatevoter = async (voterid, voteeid) => {
 //   const voter = await db.selectVoter(voterid);
