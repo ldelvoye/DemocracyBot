@@ -41,22 +41,21 @@ module.exports = {
     const oldLeaderId = leaders[0]
     const newLeaderId = leaders[1]
 
-    if (newLeaderId !== '0') {      
+    console.log(newLeaderId)
+    console.log(oldLeaderId)
+
+    if (newLeaderId !== 0) {      
       const rolePleb = interaction.guild.roles.cache.find(r => r.id === "1031334547591274556")
       const roleLeader = interaction.guild.roles.cache.find(r => r.id === "1031329937287807046")
 
-      // if (oldLeaderId !== 0) {
-      //   const oldLeader = await interaction.member.fetch(oldLeaderId)
-      //   oldLeader.roles.add(rolePleb)
-      //   oldLeader.roles.remove(roleLeader)
-      // }
+      if (oldLeaderId !== 0) {
+        const oldLeader = await interaction.member.fetch(oldLeaderId)
+        oldLeader.roles.add(rolePleb)
+        oldLeader.roles.remove(roleLeader)
+      }
 
-      console.log(leaders)
-      console.log(leaders[1])
-      console.log(newLeaderId)
-      console.log(typeof newLeaderId)
-      const newLeader = await interaction.guild.members.fetch('636612845341245442')
-      console.log(newLeader)
+      const newLeader = await interaction.guild.members.fetch(newLeaderId)
+      // console.log(newLeader)
       newLeader.roles.add(roleLeader)
       newLeader.roles.remove(rolePleb)
 
