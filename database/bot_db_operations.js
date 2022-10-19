@@ -105,10 +105,19 @@ const resetLeaderboard = async () => {
   await db.destroyLeaderboard();
 };
 
+const removeVoter = async (voterID) => {
+  const user = await db.selectVoter(voterID);
+  if (user.candidateID !== 0) {
+    await db.decrementVotes(user.candidateID);
+  }
+  await db.deleteFromVoters(voterID);
+};
+
 module.exports = {
   updateVotes,
   updateLeaderboard,
   getUserInformation,
   getCurrentLeader,
   resetLeaderboard,
+  removeVoter,
 };
