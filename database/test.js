@@ -52,7 +52,6 @@ const updateLeaderboard = async () => {
       newLeader: 0,
     };
   } else if (Object.values(leaderID).includes(currentLeader.voterID) == false) {
-    console.log(leaderID.voterID);
     await db.updateLeaderboard(leaderID.leader_0);
     await db.deleteOldLeader(currentLeader.voterID);
     const newLeader = leaderID.leader_0;
@@ -66,7 +65,24 @@ const updateLeaderboard = async () => {
   }
 };
 
-updateLeaderboard();
+const removeVoter = async (voterID) => {
+  const user = await db.selectVoter(voterID);
+  if (user == `Voter with id ${voterID} does not exist!`) {
+    return;
+  }
+  db.updateVotes(user.voterID);
+  if (user.leader == true) {
+    const newLeader = await updateLeaderboard();
+    console.log(newLeader);
+  }
+  console.log(user, "removed user");
+  if (user.candidateID !== 0) {
+    await db.decrementVotes(user.candidateID);
+  }
+  await db.deleteFromVoters(voterID);
+};
+
+removeVoter(6);
 
 // const updatevoter = async (voterid, voteeid) => {
 //   const voter = await db.selectVoter(voterid);

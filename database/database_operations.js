@@ -112,6 +112,21 @@ class DatabaseOperations {
     return candidate;
   }
 
+  async updateVotes(voterid) {
+    const candidate = await Voters.update(
+      {
+        votes: 0,
+      },
+      {
+        where: {
+          voterID: voterid,
+        },
+      }
+    );
+
+    return candidate;
+  }
+
   async updateCandidate(voterid, candidateid) {
     const x = await Voters.update(
       { candidate: candidateid },

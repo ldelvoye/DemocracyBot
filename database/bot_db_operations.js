@@ -43,6 +43,10 @@ const updateVotes = async (voterid, voteeid) => {
     }
   } else {
     if (prevCandidate !== "0") {
+      const votee = db.selectVoter(prevCandidate);
+      if (votee == `Voter with id ${prevCandidate} does not exist!`) {
+        console.log("");
+      }
       await db.decrementVotes(prevCandidate);
     }
     await db.updateCandidate(voterid, voteeid);
@@ -107,10 +111,15 @@ const resetLeaderboard = async () => {
 
 const removeVoter = async (voterID) => {
   const user = await db.selectVoter(voterID);
-  console.log(user);
   if (user == `Voter with id ${voterID} does not exist!`) {
     return;
   }
+  db.updateVotes(user.voterID);
+  if (user.leader == true) {
+    const newLeader = await updateLeaderboard();
+    console.log(newLeader);
+  }
+  console.log(user, "removed user");
   if (user.candidateID !== 0) {
     await db.decrementVotes(user.candidateID);
   }
