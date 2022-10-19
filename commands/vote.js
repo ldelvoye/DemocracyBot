@@ -45,7 +45,6 @@ module.exports = {
       let rolePleb = interaction.guild.roles.cache.find(r => r.id === "1031334547591274556")
       let roleLeader = interaction.guild.roles.cache.find(r => r.id === "1031329937287807046")
 
-      console.log(oldLeaderId>0)
       if (oldLeaderId > 0) {
         let oldLeader = await interaction.guild.members.fetch(oldLeaderId)
         oldLeader.roles.add(rolePleb)
@@ -53,7 +52,6 @@ module.exports = {
       }
 
       let newLeader = await interaction.guild.members.fetch(newLeaderId)
-      // console.log(newLeader)
       newLeader.roles.add(roleLeader)
       newLeader.roles.remove(rolePleb)
 
