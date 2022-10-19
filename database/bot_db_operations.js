@@ -107,6 +107,10 @@ const resetLeaderboard = async () => {
 
 const removeVoter = async (voterID) => {
   const user = await db.selectVoter(voterID);
+  console.log(user);
+  if (user == `Voter with id ${voterid} does not exist!`) {
+    return;
+  }
   if (user.candidateID !== 0) {
     await db.decrementVotes(user.candidateID);
   }

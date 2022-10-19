@@ -94,8 +94,6 @@ class DatabaseOperations {
     } else {
       return `Voter with id ${voterid} does not exist!`;
     }
-
-    return voter;
   }
 
   async selectCandidate(voterid) {
