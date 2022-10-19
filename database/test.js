@@ -37,11 +37,16 @@ const updateVotes = async (voterid, voteeid) => {
   const votee = await db.selectVoter(voteeid);
   const prevCandidate = voter.candidateID;
 
-  if (voter === `Voter with id ${voterid} does not exist!`) {
+  if (
+    voter === `Voter with id ${voterid} does not exist!` &&
+    voterid !== voteeid
+  ) {
     await db.insertIntoVoters(voterid, voteeid);
   } else if (voterid === voteeid) {
     await db.updateCandidate(voterid, voteeid);
-    await db.decrementVotes(prevCandidate);
+    if (prevCandidate !== undefined) {
+      await db.decrementVotes(prevCandidate);
+    }
     await db.incrementVotes(voteeid);
     return;
   } else {
@@ -139,10 +144,15 @@ const removeVoter = async (voterID) => {
 // resetLeaderboard();
 
 // 1: user not existing votes for someone new
-// (async () => {
-//   await updateVotes(1, 2);
-//   await updateLeaderboard();
-// })();
+(async () => {
+  try {
+    await updateVotes(1, 1);
+    await updateLeaderboard();
+  } catch (e) {
+    console.log(e.name);
+    console.log(e.message);
+  }
+})();
 
 // 2:  user existing votes for someone not existing
 // (async () => {
@@ -170,7 +180,7 @@ const removeVoter = async (voterID) => {
 // })();
 
 // 6: normal voter leaves
-removeVoter(1);
+// removeVoter(1);
 
 // 7: leader leaves
 // removeVoter(3);

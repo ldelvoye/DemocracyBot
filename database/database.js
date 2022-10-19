@@ -3,13 +3,17 @@ const { postgres } = require("../config.json");
 
 class Database extends Sequelize {
   constructor(options = {}) {
-    super(postgres.url, { pool: { max: 5, idle: 2000, evict: 20 } });
+    super(postgres.url, {
+      pool: { max: 5, idle: 2000, evict: 20 },
+      retry: { max: 5, match: [Sequelize.ConnectionError] },
+    });
+    this.boot();
   }
 
   async boot() {
     await this.authenticate()
       .then(() => console.log("[DATABASE]: Successfully connected!"))
-      .catch(() => console.error("[DATABASE]: Failed to connect", error));
+      .catch((error) => console.error("[DATABASE]: Failed to connect."));
   }
 }
 
