@@ -56,11 +56,14 @@ const updateVotes = async (voterid, voteeid) => {
 };
 
 const updateLeaderboard = async () => {
+  console.log("dupaerf");
   const maxVotes = await db.selectMaxVotes();
+  console.log(maxVotes, "max Votes");
   const leaderID = await db.selectLeaderWithVotes(maxVotes);
+  console.log(leaderID, "leader ID");
   const currentLeader = await db.selectLeader();
   if (currentLeader === 0 && maxVotes !== 0) {
-    console.log(leaderID.leader_0);
+    console.log(leaderID.leader_0, "leader ID, leadr_0");
     await db.updateLeaderboard(leaderID.leader_0);
     const newLeader = await db.selectLeader();
     return {
@@ -76,7 +79,7 @@ const updateLeaderboard = async () => {
       newLeader: 0,
     };
   } else if (Object.values(leaderID).includes(currentLeader.voterID) == false) {
-    console.log(leaderID.leader_0);
+    console.log(leaderID.leader_0, "leader ID, leadr_0");
     await db.updateLeaderboard(leaderID.leader_0);
     await db.deleteOldLeader(currentLeader.voterID);
     const newLeader = leaderID.leader_0;
