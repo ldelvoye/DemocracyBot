@@ -35,19 +35,20 @@ const updateVotes = async (voterid, voteeid) => {
   const prevCandidate = voter.candidateID;
 
   if (voter === `Voter with id ${voterid} does not exist!`) {
-    if (voterid === voteeid) {
-      await db.insertIntoVoters(voterid, voteeid, 1);
-      return;
-    } else {
-      await db.insertIntoVoters(voterid, voteeid);
-    }
+    await db.insertIntoVoters(voterid, voteeid);
+  } else if (voterid === voteeid) {
+    await db.updateCandidate(voterid, voteeid);
+    await db.decrementVotes(prevCandidate);
+    await db.incrementVotes(voteeid);
+    return;
   } else {
     if (prevCandidate !== "0") {
       const prevVotee = await db.selectVoter(prevCandidate);
       if (prevVotee == `Voter with id ${prevCandidate} does not exist!`) {
         console.log("");
+      } else {
+        await db.decrementVotes(prevCandidate);
       }
-      await db.decrementVotes(prevCandidate);
       // const x = await db.selectVoter(prevCandidate);
       // console.log(x);
     }
@@ -125,7 +126,7 @@ const removeVoter = async (voterID) => {
     console.log(newLeader);
   }
   console.log(user, "removed user");
-  if (user.candidateID !== "0") {
+  if (user.candidateID !== "0" && user.candidateID !== user.voterID) {
     await db.decrementVotes(user.candidateID);
   }
   await db.deleteFromVoters(voterID);
