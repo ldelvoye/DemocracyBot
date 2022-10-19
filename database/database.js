@@ -3,7 +3,7 @@ const { postgres } = require("../config.json");
 
 class Database extends Sequelize {
   constructor(options = {}) {
-    super(process.env.DATABASE, { pool: { max: 5, idle: 2000, evict: 20 } });
+    super(postgres.url, { pool: { max: 5, idle: 2000, evict: 20 } });
   }
 
   async boot() {
