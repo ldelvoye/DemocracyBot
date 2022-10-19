@@ -131,6 +131,7 @@ class DatabaseOperations {
   }
 
   async updateLeaderboard(voterid) {
+    console.log(voterid, 'voter Id')
     await Voters.update(
       { leader: true },
       {

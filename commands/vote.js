@@ -36,25 +36,23 @@ module.exports = {
 
     await interaction.reply({ embeds: [message] })
 
-    const temp = await updateLeaderboard()
-    const leaders = Object.values(temp)
-    const oldLeaderId = leaders[0]
-    const newLeaderId = leaders[1]
+    let temp = await updateLeaderboard()
+    let leaders = Object.values(temp)
+    let oldLeaderId = leaders[0]
+    let newLeaderId = leaders[1]
 
-    console.log(newLeaderId)
-    console.log(oldLeaderId)
+    if (newLeaderId > 0) {
+      let rolePleb = interaction.guild.roles.cache.find(r => r.id === "1031334547591274556")
+      let roleLeader = interaction.guild.roles.cache.find(r => r.id === "1031329937287807046")
 
-    if (newLeaderId !== 0) {      
-      const rolePleb = interaction.guild.roles.cache.find(r => r.id === "1031334547591274556")
-      const roleLeader = interaction.guild.roles.cache.find(r => r.id === "1031329937287807046")
-
-      if (oldLeaderId !== 0) {
-        const oldLeader = await interaction.member.fetch(oldLeaderId)
+      console.log(oldLeaderId>0)
+      if (oldLeaderId > 0) {
+        let oldLeader = await interaction.guild.members.fetch(oldLeaderId)
         oldLeader.roles.add(rolePleb)
         oldLeader.roles.remove(roleLeader)
       }
 
-      const newLeader = await interaction.guild.members.fetch(newLeaderId)
+      let newLeader = await interaction.guild.members.fetch(newLeaderId)
       // console.log(newLeader)
       newLeader.roles.add(roleLeader)
       newLeader.roles.remove(rolePleb)
