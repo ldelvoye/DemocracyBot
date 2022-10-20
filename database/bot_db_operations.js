@@ -226,7 +226,7 @@ const voteCommandDB = async (voterid, voteeid) => {
 };
 
 const getUserInformation = async (voterID) => {
-  const t = await sequelize.transaction();
+  const t = await db.db.transaction();
 
   try {
     if (voterID === 0) {
@@ -243,7 +243,7 @@ const getUserInformation = async (voterID) => {
 };
 
 const getCurrentLeader = async () => {
-  const t = await sequelize.transaction();
+  const t = await db.db.transaction();
 
   try {
     const leader = await db.selectLeader(t);
@@ -257,7 +257,7 @@ const getCurrentLeader = async () => {
 };
 
 const resetLeaderboard = async () => {
-  const t = await sequelize.transaction();
+  const t = await db.db.transaction();
 
   try {
     await db.destroyLeaderboard(t);
