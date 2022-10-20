@@ -1,35 +1,3 @@
-// const { Sequelize, DataTypes, Model } = require("sequelize");
-
-// class Test extends Model {}
-
-// sequelize = database;
-
-// Test.init(
-//   {
-//     voterID: {
-//       type: DataTypes.BIGINT,
-//       allowNull: false,
-//       primaryKey: true,
-//     },
-//     candidate: {
-//       type: DataTypes.BIGINT,
-//       allowNull: false,
-//     },
-//     leader: {
-//       type: DataTypes.BOOLEAN,
-//       allowNull: false,
-//     },
-//   },
-//   {
-//     sequelize,
-//   }
-// );
-// // sequelize.drop();
-// // console.log("All models were synchronized successfully.");
-// module.exports = { Test };
-
-// // console.log(database.models);
-
 const { db } = require("./database_operations");
 
 const updateVotes = async (voterid, voteeid) => {
@@ -43,7 +11,11 @@ const updateVotes = async (voterid, voteeid) => {
   ) {
     await db.insertIntoVoters(voterid, voteeid);
   } else if (voterid === voteeid) {
-    await db.updateCandidate(voterid, voteeid);
+    if (voter === `Voter with id ${voterid} does not exist!`) {
+      await db.insertIntoVoters(voterid, voteeid);
+    } else {
+      await db.updateCandidate(voterid, voteeid);
+    }
     if (prevCandidate !== undefined) {
       await db.decrementVotes(prevCandidate);
     }
@@ -129,58 +101,68 @@ const removeVoter = async (voterID) => {
     return;
   }
   db.updateVotes(user.voterID);
-  if (user.leader == true) {
-    const newLeader = await updateLeaderboard();
-    console.log(newLeader);
-  }
-  console.log(user, "removed user");
+  db.updateLeaderboard(0);
   if (user.candidateID !== "0" && user.candidateID !== user.voterID) {
     await db.decrementVotes(user.candidateID);
   }
   await db.deleteFromVoters(voterID);
+  console.log(user, "removed user");
+  const newLeader = await updateLeaderboard();
+  console.log(newLeader);
 };
 
-// 0: resets leaderboard
-// resetLeaderboard();
-
-// 1: user not existing votes for someone new
+// ! 0: resets leaderboard
 (async () => {
   try {
-    await updateVotes(1, 1);
-    await updateLeaderboard();
+    resetLeaderboard();
   } catch (e) {
-    console.log(e.name);
-    console.log(e.message);
+    console.log("ok");
   }
+  console.log("ok");
 })();
 
-// 2:  user existing votes for someone not existing
+// ! 1: user not existing votes for someone new
+// (async () => {
+//   try {
+//     await updateVotes(1, 1);
+//     await updateLeaderboard();
+//   } catch (e) {
+//     console.log(e.name);
+//     console.log(e.message);
+//   }
+// })();
+
+// ! 2:  user existing votes for someone not existing
 // (async () => {
 //   await updateVotes(2, 3);
 //   await updateLeaderboard();
 // })();
 
-// 3: user changes vote to themselves
+// ! 3: user changes vote to themselves
 // (async () => {
 //   await updateVotes(2, 2);
 //   await updateLeaderboard();
 // })();
 
-// 4: user existing votes for someone existing
+// ! 4: user existing votes for someone existing
 // (async () => {
 //   await updateVotes(1, 3);
 //   await updateLeaderboard();
 // })();
 
-// 5: users votes for themselves and changes leader
+// ! 5: users votes for themselves and changes leader
 // (async () => {
 //   await updateVotes(1, 1);
 //   await updateVotes(2, 1);
 //   await updateLeaderboard();
 // })();
 
-// 6: normal voter leaves
-// removeVoter(1);
+// ! 6: normal voter leaves
+// (async () => {
+//   // await updateVotes(2, 1);
+//   // await updateVotes(4, 3);
+//   await removeVoter(1);
+// })();
 
-// 7: leader leaves
+// ! 7: leader leaves
 // removeVoter(3);

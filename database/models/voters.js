@@ -1,9 +1,7 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
-const { database } = require("../database");
+const { sequelize } = require("../database");
 
 class Voters extends Model {}
-
-sequelize = database;
 
 Voters.init(
   {
