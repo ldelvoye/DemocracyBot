@@ -15,32 +15,44 @@ class DatabaseOperations {
     await this.db.sync({ force: true });
   }
 
-  async incrementVotes(candidateid) {
-    await Voters.increment({ votes: 1 }, { where: { voterID: candidateid } });
+  async incrementVotes(candidateid, transaction) {
+    await Voters.increment(
+      { votes: 1 },
+      { where: { voterID: candidateid }, transaction: transaction }
+    );
   }
 
-  async decrementVotes(candidateid) {
-    await Voters.increment({ votes: -1 }, { where: { voterID: candidateid } });
+  async decrementVotes(candidateid, transaction) {
+    await Voters.increment(
+      { votes: -1 },
+      { where: { voterID: candidateid }, transaction: transaction }
+    );
   }
 
-  async insertIntoVoters(voterid, candidateid, vote = 0) {
-    const voter = await Voters.create({
-      voterID: voterid,
-      candidate: candidateid,
-      leader: false,
-      votes: vote,
-    });
+  async insertIntoVoters(voterid, candidateid, transaction, vote = 0) {
+    const voter = await Voters.create(
+      {
+        voterID: voterid,
+        candidate: candidateid,
+        leader: false,
+        votes: vote,
+      },
+      { transaction: transaction }
+    );
 
     console.log(`Voter ${voter.voterID} has been created!`);
     return voter;
   }
 
-  async selectLeader() {
-    const leader = await Voters.findOne({
-      where: {
-        leader: true,
+  async selectLeader(transaction) {
+    const leader = await Voters.findOne(
+      {
+        where: {
+          leader: true,
+        },
       },
-    });
+      { transaction: transaction }
+    );
     if (leader !== null) {
       const result = {
         voterID: leader["dataValues"]["voterID"],
@@ -54,12 +66,13 @@ class DatabaseOperations {
     }
   }
 
-  async selectLeaderWithVotes(votes) {
+  async selectLeaderWithVotes(vote, transaction) {
     const leader = await Voters.findAll({
       attributes: ["voterID"],
       where: {
-        votes: votes,
+        votes: vote,
       },
+      transaction: transaction,
     });
 
     const result = {};
@@ -74,7 +87,7 @@ class DatabaseOperations {
     return result;
   }
 
-  async selectVoter(voterid) {
+  async selectVoter(voterid, transaction) {
     const voter = await Voters.findOne(
       {
         where: {
@@ -83,6 +96,7 @@ class DatabaseOperations {
       },
       {
         raw: true,
+        transaction: transaction,
       }
     );
 
@@ -99,13 +113,14 @@ class DatabaseOperations {
     }
   }
 
-  async selectCandidate(voterid) {
+  async selectCandidate(voterid, transaction) {
     const candidate = await Voters.findAll(
       {
         attributes: ["candidate"],
         where: {
           voterID: voterid,
         },
+        transaction: transaction,
       },
       {
         raw: true,
@@ -115,7 +130,7 @@ class DatabaseOperations {
     return candidate;
   }
 
-  async updateVotes(voterid) {
+  async updateVotes(voterid, transaction) {
     const candidate = await Voters.update(
       {
         votes: 0,
@@ -124,19 +139,21 @@ class DatabaseOperations {
         where: {
           voterID: voterid,
         },
+        transaction: transaction,
       }
     );
 
     return candidate;
   }
 
-  async updateCandidate(voterid, candidateid) {
+  async updateCandidate(voterid, candidateid, transaction) {
     const x = await Voters.update(
       { candidate: candidateid },
       {
         where: {
           voterID: voterid,
         },
+        transaction: transaction,
       },
       {
         raw: true,
@@ -146,53 +163,56 @@ class DatabaseOperations {
     return x;
   }
 
-  async updateLeaderboard(voterid) {
+  async updateLeaderboard(voterid, transaction) {
     await Voters.update(
       { leader: true },
       {
         where: {
           voterID: voterid,
         },
+        transaction: transaction,
       }
     );
 
     console.log(`Leaderboard has been updated!`);
   }
 
-  async deleteOldLeader(voterid) {
+  async deleteOldLeader(voterid, transaction) {
     await Voters.update(
       { leader: false },
       {
         where: {
           voterID: voterid,
         },
+        transaction: transaction,
       }
     );
     console.log(`Old Leader has been deleted!`);
   }
 
-  async selectMaxVotes() {
-    const maxVotes = await Voters.max("votes");
+  async selectMaxVotes(transaction) {
+    const maxVotes = await Voters.max("votes", { transaction: transaction });
 
     // const maxvotes = maxVotes;
 
     return maxVotes;
   }
 
-  async deleteFromVoters(voterid) {
+  async deleteFromVoters(voterid, transaction) {
     await Voters.destroy({
       where: {
         voterID: voterid,
       },
+      transaction: transaction,
     });
 
     console.log(`Voter ${voterid} has been deleted!`);
   }
 
-  async destroyLeaderboard() {
-    await Voters.destroy({ truncate: true });
-    await this.insertIntoVoters(0, 0);
-    await this.updateLeaderboard(0);
+  async destroyLeaderboard(transaction) {
+    await Voters.destroy({ truncate: true, transaction: transaction });
+    await this.insertIntoVoters(0, 0, transaction);
+    await this.updateLeaderboard(0, transaction);
   }
 }
 
