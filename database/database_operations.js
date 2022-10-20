@@ -16,11 +16,7 @@ class DatabaseOperations {
   }
 
   async incrementVotes(candidateid) {
-    // try {
     await Voters.increment({ votes: 1 }, { where: { voterID: candidateid } });
-    //   } catch (error) {
-    //     if (error.name === 'SequelizeConnectionError' && error.message === 'too many connnections'
-    //   // }
   }
 
   async decrementVotes(candidateid) {
